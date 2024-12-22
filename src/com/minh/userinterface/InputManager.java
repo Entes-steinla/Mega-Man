@@ -4,6 +4,7 @@
  */
 package com.minh.userinterface;
 
+import com.minh.gameobjects.Megaman;
 import java.awt.event.KeyEvent;
 
 /**
@@ -22,6 +23,8 @@ public class InputManager {
         switch (keyCode) {
             case KeyEvent.VK_UP -> {
                 System.out.println("up");
+                gamePanel.megaman.setSpeedY(-3);
+                gamePanel.megaman.setPosY(gamePanel.megaman.getPosY() - 3);
             }
 
             case KeyEvent.VK_DOWN -> {
@@ -30,33 +33,45 @@ public class InputManager {
 
             case KeyEvent.VK_LEFT -> {
                 System.out.println("left");
+                gamePanel.megaman.setDirection(Megaman.DIR_LEFT);
+                gamePanel.megaman.setSpeedX(-5);
             }
 
             case KeyEvent.VK_RIGHT -> {
                 System.out.println("right");
+                gamePanel.megaman.setDirection(Megaman.DIR_RIGHT);
+                gamePanel.megaman.setSpeedX(5);
             }
 
             case KeyEvent.VK_ENTER -> {
             }
 
             case KeyEvent.VK_SPACE -> {
+                gamePanel.megaman.setSpeedY(-3);
+                gamePanel.megaman.setPosY(gamePanel.megaman.getPosY() - 3);
             }
 
             case KeyEvent.VK_W -> {
                 System.out.println("up w");
-            }
-
-            case KeyEvent.VK_A -> {
-                System.out.println("left a");
-                gamePanel.megaman.setSpeedX(-5);
+                gamePanel.megaman.setSpeedY(-3);
+                gamePanel.megaman.setPosY(gamePanel.megaman.getPosY() - 3);
             }
 
             case KeyEvent.VK_S -> {
                 System.out.println("down s");
             }
 
+            case KeyEvent.VK_A -> {
+                System.out.println("left a");
+                // khi animation ngưng chuyển động thì xác định nhân vật đứng hướng nào
+                gamePanel.megaman.setDirection(Megaman.DIR_LEFT);
+                gamePanel.megaman.setSpeedX(-5);
+            }
+
             case KeyEvent.VK_D -> {
                 System.out.println("right d");
+                // khi animation ngưng chuyển động thì xác định nhân vật đứng hướng nào
+                gamePanel.megaman.setDirection(Megaman.DIR_RIGHT);
                 gamePanel.megaman.setSpeedX(5);
             }
 
@@ -81,10 +96,12 @@ public class InputManager {
 
             case KeyEvent.VK_LEFT -> {
                 System.out.println("Release left");
+                gamePanel.megaman.setSpeedX(0);
             }
 
             case KeyEvent.VK_RIGHT -> {
                 System.out.println("Release right");
+                gamePanel.megaman.setSpeedX(0);
             }
 
             case KeyEvent.VK_ENTER -> {
@@ -94,15 +111,21 @@ public class InputManager {
             }
 
             case KeyEvent.VK_W -> {
-            }
-
-            case KeyEvent.VK_A -> {
+                System.out.println("Release up w");
             }
 
             case KeyEvent.VK_S -> {
+                System.out.println("Release down s");
+            }
+
+            case KeyEvent.VK_A -> {
+                System.out.println("Release left a");
+                gamePanel.megaman.setSpeedX(0);
             }
 
             case KeyEvent.VK_D -> {
+                System.out.println("Release right d");
+                gamePanel.megaman.setSpeedX(0);
             }
 
             // nút bắn

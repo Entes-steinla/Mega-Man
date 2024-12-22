@@ -34,9 +34,19 @@ public class Megaman {
         this.height = height;
         this.mass = mass;
     }
-    
-    public void update(){
+
+    public void update() {
         setPosX(getPosX() + speedX);
+        setPosY(getPosY() + speedY);
+
+        setSpeedY(getSpeedY() + mass);
+
+        if (getPosY() >= 400) {
+            setPosY(400);
+        } else {
+            setPosX(getPosX() + speedX);
+            setSpeedY(getSpeedY() + mass);
+        }
     }
 
     public void draw(Graphics2D g2) {
