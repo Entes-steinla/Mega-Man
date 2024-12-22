@@ -33,7 +33,7 @@ public class Animation {
 
     public Animation() {
         delayFrames = new ArrayList<Double>();
-        beginTime = 0;
+        beginTime = 0L;
         currentFrame = 0;
 
         ignoreFrames = new ArrayList<Boolean>();
@@ -62,10 +62,10 @@ public class Animation {
         }
 
         frameImages = new ArrayList<FrameImage>();
-        for (FrameImage f : frameImages) {
+        for (FrameImage f : animation.frameImages) {
             frameImages.add(new FrameImage(f));
         }
-    } // copy animation
+    } // copy animation constructor
 
     // name
     public String getName() {
@@ -189,8 +189,9 @@ public class Animation {
             beginTime = currentTime;
         } else {
             // nếu tg hiện tại trừ thời gian bắt đầu lớn hơn tg delay giữa các frame thì chuyển sang frame khác
-            if (currentTime - beginTime > delayFrames.get(currentFrame));
-            nextFrame();
+            if (currentTime - beginTime > delayFrames.get(currentFrame)) {
+                nextFrame();
+            }
             beginTime = currentTime;
         }
     }
@@ -238,13 +239,13 @@ public class Animation {
 
     // vẽ animation
     public void draw(int x, int y, Graphics2D g2) {
-        
+
         // animation sẽ vẽ hình hiện tại
         BufferedImage image = getCurrentImage();
 
         g2.drawImage(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
         if (drawRectFrame) {
-            g2.drawRect(x - image.getWidth() / 2, x - image.getWidth() / 2, image.getWidth(), image.getHeight());
+            g2.drawRect(x - image.getWidth() / 2, y - image.getWidth() / 2, image.getWidth(), image.getHeight());
         }
     }
 } // class

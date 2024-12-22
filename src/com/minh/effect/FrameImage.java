@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 public class FrameImage {
 
     private String name;
-    
+
     private BufferedImage image;
 
     public FrameImage(String name, BufferedImage image) {
@@ -30,6 +30,12 @@ public class FrameImage {
 
         Graphics g = image.getGraphics();
         g.drawImage(frameImage.getImage(), 0, 0, null);
+    }
+
+    // constructor rong
+    public FrameImage() {
+        image = null;
+        name = null;
     }
 
     public void draw(Graphics2D g2, int x, int y) {

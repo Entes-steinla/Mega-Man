@@ -4,8 +4,12 @@
  */
 package com.minh.userinterface;
 
+import com.minh.effect.CacheDataLoader;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -32,6 +36,12 @@ public class GameFrame extends JFrame {
         // thoát bằng nút close
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        try {
+            CacheDataLoader.getInstance().LoadData();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         gamePanel = new GamePanel();
         add(gamePanel);
 
@@ -49,5 +59,5 @@ public class GameFrame extends JFrame {
         gameFrame.setVisible(true);
         gameFrame.startGame();
     } // main
-    
+
 } // class

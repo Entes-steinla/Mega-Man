@@ -71,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
             // update
             // render
-//            repaint(); // vẽ lại
+//            repaint(); // vẽ lạif
 
             long deltaTime = System.nanoTime() - beginTime;
             sleepTime = period - deltaTime;

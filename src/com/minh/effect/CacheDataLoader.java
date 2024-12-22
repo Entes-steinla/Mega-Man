@@ -37,6 +37,14 @@ public class CacheDataLoader {
         }
         return instance;
     }
+    
+    public void LoadData() throws IOException{
+        LoadFrame();
+        LoadAnimation();
+//        LoadPhysMap();
+//        LoadBackgroundMap();
+//        LoadSounds();
+    }
 
     public void LoadFrame() throws IOException {
         frameImages = new Hashtable<String, FrameImage>();
@@ -163,5 +171,10 @@ public class CacheDataLoader {
 
             br.close();
         }
+    }
+
+    public Animation getAnimation(String name) {
+        Animation animation = new Animation(instance.animations.get(name));
+        return animation;
     }
 } // class
