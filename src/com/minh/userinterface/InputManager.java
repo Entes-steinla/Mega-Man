@@ -12,6 +12,12 @@ import java.awt.event.KeyEvent;
  */
 public class InputManager {
 
+    private GamePanel gamePanel;
+
+    public InputManager(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
+
     public void processKeyPressed(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_UP -> {
@@ -37,15 +43,21 @@ public class InputManager {
             }
 
             case KeyEvent.VK_W -> {
+                System.out.println("up w");
             }
 
             case KeyEvent.VK_A -> {
+                System.out.println("left a");
+                gamePanel.megaman.setSpeedX(-5);
             }
 
             case KeyEvent.VK_S -> {
+                System.out.println("down s");
             }
 
             case KeyEvent.VK_D -> {
+                System.out.println("right d");
+                gamePanel.megaman.setSpeedX(5);
             }
 
             // nút bắn

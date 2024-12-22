@@ -6,6 +6,7 @@ package com.minh.userinterface;
 
 import com.minh.effect.Animation;
 import com.minh.effect.FrameImage;
+import com.minh.gameobjects.Megaman;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -31,18 +32,45 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private InputManager inputManager;
 
-    public GamePanel() {
-        inputManager = new InputManager();
+    private BufferedImage buffImage;
+    private Graphics2D buffG2D;
 
+    //
+    Megaman megaman = new Megaman(300, 300, 100, 100, 0.1f);
+
+    public GamePanel() {
+        inputManager = new InputManager(this);
+
+        buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
     }
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
+        g.drawImage(buffImage, 0, 0, this);
 
-        Graphics2D g2 = (Graphics2D) g;
+    }
+    
+    public void UpdateGame(){
+        megaman.update();
+    }
 
+    public void RenderGame() {
+        if (buffImage == null) {
+            buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        }
+
+        if (buffImage != null) {
+            buffG2D = (Graphics2D) buffImage.getGraphics();
+        }
+
+        if (buffG2D != null) {
+            buffG2D.setColor(Color.WHITE);
+            buffG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
+
+            // draw objects game here
+            megaman.draw(buffG2D);
+            
+        }
     }
 
     public void startGame() {
@@ -62,30 +90,29 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         long beginTime;
         long sleepTime;
 
-        int a = 1;
-
         beginTime = System.nanoTime(); // lấy tg hệ thống
         // game loop
         while (isRunning) {
-//            System.out.println("a = " + (a++));
-
-            // update
-            // render
-//            repaint(); // vẽ lạif
-
+            
+            UpdateGame();
+            
+            RenderGame();
+            
+            repaint(); // vẽ lại
             long deltaTime = System.nanoTime() - beginTime;
             sleepTime = period - deltaTime;
 
             // Tfamre = update + draw + sleep
             try {
                 if (sleepTime > 0) {
-                    Thread.sleep(sleepTime / 1000000);
+                    Thread.sleep(sleepTime / 1000000L);
                 } else {
-                    Thread.sleep(period / 2000000);
+                    Thread.sleep(period / 2000000L);
                 }
             } catch (InterruptedException ex) {
-                beginTime = System.nanoTime();
+                ex.printStackTrace();
             }
+            beginTime = System.nanoTime();
         }
     } // run
 
