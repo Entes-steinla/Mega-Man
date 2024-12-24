@@ -7,6 +7,7 @@ package com.minh.userinterface;
 import com.minh.effect.Animation;
 import com.minh.effect.FrameImage;
 import com.minh.gameobjects.Megaman;
+import com.minh.gameobjects.PhysicalMap;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -37,6 +38,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     //
     Megaman megaman = new Megaman(300, 300, 100, 100, 0.1f);
+    
+    PhysicalMap physicalMap = new PhysicalMap(0, 0);
 
     public GamePanel() {
         inputManager = new InputManager(this);
@@ -68,7 +71,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             buffG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
 
             // draw objects game here
-            megaman.draw(buffG2D);
+             megaman.draw(buffG2D);
+            
+            physicalMap.draw(buffG2D);
             
         }
     }

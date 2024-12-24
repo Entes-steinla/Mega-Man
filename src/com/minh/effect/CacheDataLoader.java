@@ -18,13 +18,16 @@ import javax.imageio.ImageIO;
  */
 public class CacheDataLoader {
 
-    private static CacheDataLoader instance;
+    private static CacheDataLoader instance; // thông qua instance để lấy đối tượng
 
     private String framefile = "data/frame.txt";
     private String animationfile = "data/animation.txt";
+    private String physmapfile = "data/phys_map.txt";
 
     private Hashtable<String, FrameImage> frameImages;
     private Hashtable<String, Animation> animations;
+
+    private int[][] phys_map;
 
     private CacheDataLoader() {
 //        frameImages = new Hashtable<String, FrameImage>();
@@ -37,11 +40,11 @@ public class CacheDataLoader {
         }
         return instance;
     }
-    
-    public void LoadData() throws IOException{
+
+    public void LoadData() throws IOException {
         LoadFrame();
         LoadAnimation();
-//        LoadPhysMap();
+        LoadPhysMap();
 //        LoadBackgroundMap();
 //        LoadSounds();
     }
@@ -129,6 +132,47 @@ public class CacheDataLoader {
         return frameImage;
     }
 
+    public int[][] getPhysicalMap() {
+        return instance.phys_map;
+    }
+
+    public void LoadPhysMap() throws IOException {
+        // luồng dữ liệu
+        FileReader fr = new FileReader(physmapfile);
+        BufferedReader br = new BufferedReader(fr);
+
+        String line = null;
+
+        line = br.readLine();
+        int numberOfRows = Integer.parseInt(line);
+        line = br.readLine();
+        int numberOfColumns = Integer.parseInt(line);
+
+        instance.phys_map = new int[numberOfRows][numberOfColumns];
+
+        for (int i = 0; i < numberOfRows; i++) {
+            line = br.readLine();
+            String[] str = line.split(" "); // bỏ qua kí tự " ", mảng 
+            for (int j = 0; j < numberOfColumns; j++) {
+                instance.phys_map[i][j] = Integer.parseInt(str[j]); // mảng int ép kiểu
+            }
+        }
+
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                System.out.println(" " + instance.phys_map[i][j]);
+            }
+            System.out.println();
+        }
+
+        br.close();
+    }
+
+    public Animation getAnimation(String name) {
+        Animation animation = new Animation(instance.animations.get(name));
+        return animation;
+    }
+
     public void LoadAnimation() throws IOException {
         this.animations = new Hashtable();
 
@@ -173,8 +217,4 @@ public class CacheDataLoader {
         }
     }
 
-    public Animation getAnimation(String name) {
-        Animation animation = new Animation(instance.animations.get(name));
-        return animation;
-    }
 } // class
