@@ -6,6 +6,7 @@ package com.minh.gameobjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 /**
  *
@@ -27,31 +28,47 @@ public class Megaman {
     public static int DIR_RIGHT;
     private int direction; // hướng
 
-    public Megaman(float posX, float posY, float width, float height, float mass) {
+    GameWorld gameWorld;
+
+    public Megaman(float posX, float posY, float width, float height, float mass, GameWorld gameWorld) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
         this.height = height;
         this.mass = mass;
+        this.gameWorld = gameWorld;
+    }
+
+    public Rectangle getBoundForCollisionWithMap() {
+        Rectangle bound = new Rectangle();
+        bound.x = (int) (getPosX() - (getWidth() / 2));
+        bound.y = (int) (getPosY() - (getWidth() / 2));
+        bound.width = (int) getWidth();
+        bound.height = (int) getHeight();
+        return bound;
     }
 
     public void update() {
         setPosX(getPosX() + speedX);
-        setPosY(getPosY() + speedY);
 
-        setSpeedY(getSpeedY() + mass);
+        Rectangle futureRect = getBoundForCollisionWithMap();
+        futureRect.y += getSpeedY(); // doan truoc tuong lai xem co cham chuong ngai vat khong
+        Rectangle rectLand = gameWorld.physicalMap.haveCollisionWithLand(futureRect); // mat dat
 
-        if (getPosY() >= 400) {
-            setPosY(400);
+        if (rectLand != null) {
+            setPosY(rectLand.y - getHeight() / 2);
         } else {
-            setPosX(getPosX() + speedX);
+            setPosY(getPosY() + speedY);
             setSpeedY(getSpeedY() + mass);
         }
     }
 
     public void draw(Graphics2D g2) {
         g2.setColor(Color.red);
-        g2.fillRect((int) posX, (int) posY, (int) width, (int) height);
+        g2.fillRect((int) (posX - getWidth() / 2), (int) (posY - getHeight() / 2), (int) width, (int) height);
+
+        g2.setColor(Color.black);
+        g2.fillRect((int) posX, (int) posY, 5, 5);
     }
 
     // pos x

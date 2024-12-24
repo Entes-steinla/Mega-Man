@@ -16,7 +16,7 @@ public class GameWorld {
     public PhysicalMap physicalMap;
 
     public GameWorld() {
-        megaman = new Megaman(300, 300, 100, 100, 0.1f);
+        megaman = new Megaman(300, 300, 100, 100, 0.1f, this);
         physicalMap = new PhysicalMap(0, 0);
     }
 
