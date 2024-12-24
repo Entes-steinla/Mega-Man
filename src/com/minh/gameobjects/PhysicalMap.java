@@ -48,7 +48,7 @@ public class PhysicalMap {
         int posX2 = (rect.x + rect.width) / tileSize;
         posX2 += 2;
 
-        int posY = (rect.y + rect.height) / tileSize;
+        int posY1 = (rect.y + rect.height) / tileSize;
         if (posX1 < 0) {
             posX1 = 0;
         }
@@ -57,7 +57,7 @@ public class PhysicalMap {
             posX2 = phys_map[0].length - 1;
         }
 
-        for (int y = posY; y < phys_map.length; y++) {
+        for (int y = posY1; y < phys_map.length; y++) {
             for (int x = posX1; x < posX2; x++) {
                 if (phys_map[y][x] == 1) {
                     Rectangle r = new Rectangle((int) posX + x * tileSize, (int) posY + y * tileSize, tileSize, tileSize);

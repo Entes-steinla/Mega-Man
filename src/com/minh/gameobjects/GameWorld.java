@@ -26,7 +26,7 @@ public class GameWorld {
     }
 
     public void Render(Graphics2D g2) {
-        megaman.draw(g2);
         physicalMap.draw(g2);
+        megaman.draw(g2);
     }
 }
