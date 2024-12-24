@@ -6,6 +6,7 @@ package com.minh.userinterface;
 
 import com.minh.effect.Animation;
 import com.minh.effect.FrameImage;
+import com.minh.gameobjects.GameWorld;
 import com.minh.gameobjects.Megaman;
 import com.minh.gameobjects.PhysicalMap;
 import java.awt.Color;
@@ -36,25 +37,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage buffImage;
     private Graphics2D buffG2D;
 
-    //
-    Megaman megaman = new Megaman(300, 300, 100, 100, 0.1f);
-    
-    PhysicalMap physicalMap = new PhysicalMap(0, 0);
+    public GameWorld gameWorld;
 
     public GamePanel() {
-        inputManager = new InputManager(this);
+        gameWorld = new GameWorld();
+        
+        inputManager = new InputManager(gameWorld);
 
         buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
     }
 
     @Override
     public void paint(Graphics g) {
+//        super.paint(g);
         g.drawImage(buffImage, 0, 0, this);
 
     }
-    
-    public void UpdateGame(){
-        megaman.update();
+
+    public void UpdateGame() {
+        gameWorld.Update();
     }
 
     public void RenderGame() {
@@ -67,15 +68,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
 
         if (buffG2D != null) {
-            buffG2D.setColor(Color.WHITE);
+            buffG2D.setColor(Color.WHITE); // xoa nen
             buffG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
 
-            // draw objects game here
-             megaman.draw(buffG2D);
-            
-            physicalMap.draw(buffG2D);
-            
+            gameWorld.Render(buffG2D);
+
         }
+        buffG2D.dispose(); // giải phóng tài nguyên
     }
 
     public void startGame() {
@@ -90,7 +89,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public void run() {
 
         // frames per second
-        long FPS = 80;
+        long FPS = 100;
         long period = 1000 * 1000000 / FPS; // chu kì
         long beginTime;
         long sleepTime;
@@ -98,11 +97,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         beginTime = System.nanoTime(); // lấy tg hệ thống
         // game loop
         while (isRunning) {
-            
+
             UpdateGame();
-            
+
             RenderGame();
-            
+
             repaint(); // vẽ lại
             long deltaTime = System.nanoTime() - beginTime;
             sleepTime = period - deltaTime;

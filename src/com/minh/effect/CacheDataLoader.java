@@ -160,7 +160,7 @@ public class CacheDataLoader {
 
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                System.out.println(" " + instance.phys_map[i][j]);
+                System.out.print(" " + instance.phys_map[i][j]);
             }
             System.out.println();
         }
