@@ -17,7 +17,7 @@ public class GameWorld {
 
     public GameWorld() {
         megaman = new Megaman(300, 300, 100, 100, 0.1f, this);
-        physicalMap = new PhysicalMap(0, 0);
+        physicalMap = new PhysicalMap(0, 0, this);
     }
 
     public void Update() {
