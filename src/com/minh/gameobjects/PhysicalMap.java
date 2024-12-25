@@ -28,15 +28,15 @@ public class PhysicalMap extends GameObject {
         return tileSize;
     }
 
+    // ve map
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.gray);
-        for (int i = 0; i < phys_map.length; i++) {
-            for (int j = 0; j < phys_map[0].length; j++) {
-                if (phys_map[i][j] != 0) {
-                    g2.fillRect((int) getPosX() + j * tileSize, (int) getPosY() + i * tileSize, tileSize, tileSize);
-                }
-            }
-        }
+        Camera camera = getGameWorld().camera;
+        
+        g2.setColor(Color.GRAY);
+        for(int i = 0;i< phys_map.length;i++)
+            for(int j = 0;j<phys_map[0].length;j++)
+                if(phys_map[i][j]!=0) g2.fillRect((int) getPosX() + j*tileSize - (int) camera.getPosX(), 
+                        (int) getPosY() + i*tileSize - (int) camera.getPosY(), tileSize, tileSize);
     }
 
     // xử lý va chạm với mặt đất
@@ -73,12 +73,13 @@ public class PhysicalMap extends GameObject {
 
     // xử lý va chạm với trần
     public Rectangle haveCollisionWithTop(Rectangle rect) {
+
         int posX1 = rect.x / tileSize;
         posX1 -= 2;
         int posX2 = (rect.x + rect.width) / tileSize;
         posX2 += 2;
 
-//        int posY = (rect.y + rect.height) / tileSize;
+        //int posY = (rect.y + rect.height)/tileSize;
         int posY = rect.y / tileSize;
 
         if (posX1 < 0) {
@@ -91,6 +92,7 @@ public class PhysicalMap extends GameObject {
 
         for (int y = posY; y >= 0; y--) {
             for (int x = posX1; x <= posX2; x++) {
+
                 if (phys_map[y][x] == 1) {
                     Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
                     if (rect.intersects(r)) {
@@ -104,6 +106,7 @@ public class PhysicalMap extends GameObject {
 
     // xử lý va chạm với tường phải
     public Rectangle haveCollisionWithRightWall(Rectangle rect) {
+
         int posY1 = rect.y / tileSize;
         posY1 -= 2;
         int posY2 = (rect.y + rect.height) / tileSize;
@@ -119,11 +122,11 @@ public class PhysicalMap extends GameObject {
             posY1 = 0;
         }
         if (posY2 >= phys_map.length) {
-            posX2 = phys_map.length - 1;
+            posY2 = phys_map.length - 1;
         }
 
-        for (int x = posX1; x < posX2; x++) {
-            for (int y = posY1; x <= posY2; y++) {
+        for (int x = posX1; x <= posX2; x++) {
+            for (int y = posY1; y <= posY2; y++) {
                 if (phys_map[y][x] == 1) {
                     Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
                     if (r.y < rect.y + rect.height - 1 && rect.intersects(r)) {
@@ -133,15 +136,18 @@ public class PhysicalMap extends GameObject {
             }
         }
         return null;
+
     }
 
     // xử lý va chạm với tường trái
     public Rectangle haveCollisionWithLeftWall(Rectangle rect) {
-        int posY1 = rect.y / this.tileSize;
+
+        int posY1 = rect.y / tileSize;
         posY1 -= 2;
-        int posY2 = (rect.y + rect.height) / this.tileSize;
+        int posY2 = (rect.y + rect.height) / tileSize;
         posY2 += 2;
-        int posX1 = (rect.x + rect.width) / this.tileSize;
+
+        int posX1 = (rect.x + rect.width) / tileSize;
         int posX2 = posX1 - 3;
         if (posX2 < 0) {
             posX2 = 0;
@@ -150,28 +156,26 @@ public class PhysicalMap extends GameObject {
         if (posY1 < 0) {
             posY1 = 0;
         }
-
-        if (posY2 >= this.phys_map.length) {
-            posY2 = this.phys_map.length - 1;
+        if (posY2 >= phys_map.length) {
+            posY2 = phys_map.length - 1;
         }
 
-        for (int x = posX1; x >= posX2; --x) {
-            for (int y = posY1; y <= posY2; ++y) {
-                if (this.phys_map[y][x] == 1) {
-                    Rectangle r = new Rectangle((int) this.getPosX() + x * this.tileSize, (int) this.getPosY() + y * this.tileSize, this.tileSize, this.tileSize);
+        for (int x = posX1; x >= posX2; x--) {
+            for (int y = posY1; y <= posY2; y++) {
+                if (phys_map[y][x] == 1) {
+                    Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
                     if (r.y < rect.y + rect.height - 1 && rect.intersects(r)) {
                         return r;
                     }
                 }
             }
         }
-
         return null;
+
     }
 
     @Override
     public void Update() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

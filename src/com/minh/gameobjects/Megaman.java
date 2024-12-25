@@ -130,7 +130,6 @@ public class Megaman extends Human {
 
     @Override
     public void draw(Graphics2D g2) {
-        /*
         switch (getState()) {
 
             case ALIVE:
@@ -247,9 +246,8 @@ public class Megaman extends Human {
                 break;
 
         }
-         */
-        //drawBoundForCollisionWithMap(g2);
-        //drawBoundForCollisionWithEnemy(g2);
+        drawBoundForCollisionWithMap(g2);
+//        drawBoundForCollisionWithEnemy(g2);
     }
 
     @Override

@@ -175,7 +175,7 @@ public abstract class ParticularObject extends GameObject { // doi tuong cu the
     public Rectangle getBoundForCollisionWithMap() {
         Rectangle bound = new Rectangle();
         bound.x = (int) (getPosX() - (getWidth() / 2));
-        bound.y = (int) (getPosY() - (getWidth() / 2));
+        bound.y = (int) (getPosY() - (getHeight() / 2));
         bound.width = (int) getWidth();
         bound.height = (int) getHeight();
         return bound;
@@ -228,11 +228,14 @@ public abstract class ParticularObject extends GameObject { // doi tuong cu the
     public void drawBoundForCollisionWithMap(Graphics2D g2) {
         Rectangle rect = getBoundForCollisionWithMap();
         g2.setColor(Color.BLUE);
+        g2.drawRect(rect.x - (int) getGameWorld().camera.getPosX(), rect.y - (int) getGameWorld().camera.getPosY(), rect.width, rect.height);
     }
 
     public void drawBoundForCollisionWithEnemy(Graphics2D g2) {
         Rectangle rect = getBoundForCollisionWithEnemy();
         g2.setColor(Color.RED);
+        g2.drawRect(rect.x - (int) getGameWorld().camera.getPosX(), rect.y - (int) getGameWorld().camera.getPosY(), rect.width, rect.height);
+
     }
 
     public abstract Rectangle getBoundForCollisionWithEnemy();
