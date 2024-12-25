@@ -32,7 +32,7 @@ public abstract class Human extends ParticularObject {
     
     public abstract void stopRun();
     
-    public boolean isIsJumping() {
+    public boolean getIsJumping() {
         return isJumping;
     }
     
@@ -40,7 +40,7 @@ public abstract class Human extends ParticularObject {
         this.isJumping = isJumping;
     }
     
-    public boolean isIsDicking() {
+    public boolean getIsDicking() {
         return isDicking;
     }
     
@@ -48,7 +48,7 @@ public abstract class Human extends ParticularObject {
         this.isDicking = isDicking;
     }
     
-    public boolean isIsLanding() {
+    public boolean getIsLanding() {
         return isLanding;
     }
     

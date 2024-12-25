@@ -16,12 +16,12 @@ public class GameWorld {
     public PhysicalMap physicalMap;
 
     public GameWorld() {
-        megaman = new Megaman(300, 300, 100, 100, 0.1f, this);
+        megaman = new Megaman(300, 300, this);
         physicalMap = new PhysicalMap(0, 0, this);
     }
 
     public void Update() {
-        megaman.update();
+        megaman.Update();
 
     }
 

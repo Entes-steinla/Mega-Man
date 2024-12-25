@@ -34,13 +34,13 @@ public class InputManager {
 
             case KeyEvent.VK_LEFT -> {
                 System.out.println("left");
-                gameWorld.megaman.setDirection(Megaman.DIR_LEFT);
+                gameWorld.megaman.setDirection(Megaman.LEFT_DIR);
                 gameWorld.megaman.setSpeedX(-5);
             }
 
             case KeyEvent.VK_RIGHT -> {
                 System.out.println("right");
-                gameWorld.megaman.setDirection(Megaman.DIR_RIGHT);
+                gameWorld.megaman.setDirection(Megaman.RIGHT_DIR);
                 gameWorld.megaman.setSpeedX(5);
             }
 
@@ -65,14 +65,14 @@ public class InputManager {
             case KeyEvent.VK_A -> {
                 System.out.println("left a");
                 // khi animation ngưng chuyển động thì xác định nhân vật đứng hướng nào
-                gameWorld.megaman.setDirection(Megaman.DIR_LEFT);
+                gameWorld.megaman.setDirection(Megaman.LEFT_DIR);
                 gameWorld.megaman.setSpeedX(-5);
             }
 
             case KeyEvent.VK_D -> {
                 System.out.println("right d");
                 // khi animation ngưng chuyển động thì xác định nhân vật đứng hướng nào
-                gameWorld.megaman.setDirection(Megaman.DIR_RIGHT);
+                gameWorld.megaman.setDirection(Megaman.RIGHT_DIR);
                 gameWorld.megaman.setSpeedX(5);
             }
 
