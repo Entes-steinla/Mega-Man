@@ -1,40 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.minh.userinterface;
 
 import com.minh.effect.CacheDataLoader;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 
-/**
- *
- * @author DELL
- */
 public class GameFrame extends JFrame {
 
-    // static: truy xuất trực tiếp
-    // final: hằng
     public static final int SCREEN_WIDTH = 1000;
     public static final int SCREEN_HEIGHT = 600;
 
     GamePanel gamePanel;
-
+    
     public GameFrame() {
-        Toolkit toolkit = this.getToolkit();
-        Dimension dimension = toolkit.getScreenSize(); // lưu cặp giá trị
 
-        /* lấy tọa độ screen của game
-           (chiều cao màn hình hiện tại - chiều cao mong muốn) / 2 */
-        this.setBounds((dimension.width - SCREEN_WIDTH) / 2, (dimension.height - SCREEN_HEIGHT) / 2, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        // thoát bằng nút close
+        super("Mega Man java game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Toolkit toolkit = this.getToolkit();
+        Dimension solution = toolkit.getScreenSize();
 
         try {
             CacheDataLoader.getInstance().LoadData();
@@ -42,22 +26,26 @@ public class GameFrame extends JFrame {
             ex.printStackTrace();
         }
 
+        this.setBounds((solution.width - SCREEN_WIDTH) / 2, (solution.height - SCREEN_HEIGHT) / 2, SCREEN_WIDTH, SCREEN_HEIGHT);
+
         gamePanel = new GamePanel();
+        addKeyListener(gamePanel);
         add(gamePanel);
 
-        this.addKeyListener(gamePanel);
-    } // game frame
-
-    public void startGame() {
-        gamePanel.startGame();
     }
 
-    public static void main(String[] args) {
+    public void startGame() {
+
+        gamePanel.startGame();
+        this.setVisible(true);
+
+    }
+
+    public static void main(String arg[]) {
+
         GameFrame gameFrame = new GameFrame();
-
-        // hiện frame
-        gameFrame.setVisible(true);
         gameFrame.startGame();
-    } // main
 
-} // class
+    }
+
+}

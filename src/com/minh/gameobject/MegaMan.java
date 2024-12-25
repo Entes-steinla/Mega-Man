@@ -1,21 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.minh.gameobjects;
+package com.minh.gameobject;
 
+import com.minh.state.GameWorldState;
 import com.minh.effect.Animation;
 import com.minh.effect.CacheDataLoader;
 import java.applet.AudioClip;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-/**
- *
- * @author DELL
- */
-public class Megaman extends Human {
+public class MegaMan extends Human {
 
     public static final int RUNSPEED = 3;
 
@@ -33,14 +25,15 @@ public class Megaman extends Human {
     private AudioClip hurtingSound;
     private AudioClip shooting1;
 
-    public Megaman(float x, float y, GameWorld gameWorld) {
+    public MegaMan(float x, float y, GameWorldState gameWorld) {
         super(x, y, 70, 90, 0.1f, 100, gameWorld);
 
-//        shooting1 = CacheDataLoader.getInstance().getSound("bluefireshooting");
-//        hurtingSound = CacheDataLoader.getInstance().getSound("megamanhurt");
-        setTeamType(LEAGUE_TEAM); // thuộc team đồng minh
+        shooting1 = CacheDataLoader.getInstance().getSound("bluefireshooting");
+        hurtingSound = CacheDataLoader.getInstance().getSound("megamanhurt");
 
-        setTimeForNoBeHurt(2000 * 1000000); // thời gian nhấp nháy 2s
+        setTeamType(LEAGUE_TEAM);
+
+        setTimeForNoBehurt(2000 * 1000000);
 
         runForwardAnim = CacheDataLoader.getInstance().getAnimation("run");
         runBackAnim = CacheDataLoader.getInstance().getAnimation("run");
@@ -131,6 +124,7 @@ public class Megaman extends Human {
 
     @Override
     public void draw(Graphics2D g2) {
+
         switch (getState()) {
 
             case ALIVE:
@@ -247,13 +241,13 @@ public class Megaman extends Human {
                 break;
 
         }
-        drawBoundForCollisionWithMap(g2);
-//        drawBoundForCollisionWithEnemy(g2);
+
+        //drawBoundForCollisionWithMap(g2);
+        //drawBoundForCollisionWithEnemy(g2);
     }
 
     @Override
     public void run() {
-        // hướng chạy
         if (getDirection() == LEFT_DIR) {
             setSpeedX(-3);
         } else {
@@ -295,7 +289,6 @@ public class Megaman extends Human {
 
     @Override
     public void dick() {
-        // ngồi
         if (!getIsJumping()) {
             setIsDicking(true);
         }
@@ -312,7 +305,6 @@ public class Megaman extends Human {
 
     @Override
     public void stopRun() {
-        // nhả dừng chạy
         setSpeedX(0);
         runForwardAnim.reset();
         runBackAnim.reset();
@@ -322,7 +314,7 @@ public class Megaman extends Human {
 
     @Override
     public void attack() {
-        /*
+
         if (!isShooting && !getIsDicking()) {
 
             shooting1.play();
@@ -354,10 +346,10 @@ public class Megaman extends Human {
             isShooting = true;
 
         }
-         */
+
     }
 
-//    @Override
+    @Override
     public void hurtingCallback() {
         System.out.println("Call back hurting");
         hurtingSound.play();

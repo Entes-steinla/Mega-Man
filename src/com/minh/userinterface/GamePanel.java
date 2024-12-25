@@ -1,140 +1,94 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.minh.userinterface;
 
-import com.minh.effect.Animation;
-import com.minh.effect.FrameImage;
-import com.minh.gameobjects.GameWorld;
-import com.minh.gameobjects.Megaman;
-import com.minh.gameobjects.PhysicalMap;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
+import com.minh.state.GameWorldState;
 import java.awt.event.KeyListener;
+import com.minh.state.State;
+import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Graphics;
 
-/**
- *
- * @author DELL
- */
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
-    private Thread thread;
+    State gameState;
 
-    private boolean isRunning;
+    InputManager inputManager;
 
-    private InputManager inputManager;
+    Thread gameThread;
 
-    private BufferedImage buffImage;
-    private Graphics2D buffG2D;
-
-    public GameWorld gameWorld;
+    public boolean isRunning = true;
 
     public GamePanel() {
-        gameWorld = new GameWorld();
-        
-        inputManager = new InputManager(gameWorld);
 
-        buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-    }
+        //gameState = new MenuState(this);
+        gameState = new GameWorldState(this);
 
-    @Override
-    public void paint(Graphics g) {
-//        super.paint(g);
-        g.drawImage(buffImage, 0, 0, this);
+        inputManager = new InputManager(gameState);
 
-    }
-
-    public void UpdateGame() {
-        gameWorld.Update();
-    }
-
-    public void RenderGame() {
-        if (buffImage == null) {
-            buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        }
-
-        if (buffImage != null) {
-            buffG2D = (Graphics2D) buffImage.getGraphics();
-        }
-
-        if (buffG2D != null) {
-            buffG2D.setColor(Color.WHITE); // xoa nen
-//            buffG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
-
-            gameWorld.Render(buffG2D);
-
-        }
-//        buffG2D.dispose(); // giải phóng tài nguyên
     }
 
     public void startGame() {
-        if (thread == null) {
-            isRunning = true;
-            thread = new Thread(this);
-            thread.start();
-        }
+        gameThread = new Thread(this);
+        gameThread.start();
     }
+    int a = 0;
 
     @Override
     public void run() {
 
-        // frames per second
-        long FPS = 120;
-        long period = 1000 * 1000000 / FPS; // chu kì
-        long beginTime;
+        long previousTime = System.nanoTime();
+        long currentTime;
         long sleepTime;
 
-        beginTime = System.nanoTime(); // lấy tg hệ thống
-        // game loop
+        long period = 1000000000 / 120; // FPS
+
         while (isRunning) {
 
-            UpdateGame();
+            gameState.Update();
+            gameState.Render();
 
-            RenderGame();
+            repaint();
 
-            repaint(); // vẽ lại
-            long deltaTime = System.nanoTime() - beginTime;
-            sleepTime = period - deltaTime;
-
-            // Tfamre = update + draw + sleep
+            currentTime = System.nanoTime();
+            sleepTime = period - (currentTime - previousTime);
             try {
-                if (sleepTime > 0) {
-                    Thread.sleep(sleepTime / 1000000L);
-                } else {
-                    Thread.sleep(period / 2000000L);
-                }
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            beginTime = System.nanoTime();
-        }
-    } // run
 
-    // bộ lắng nghe sự kiện
+                if (sleepTime > 0) {
+                    Thread.sleep(sleepTime / 1000000);
+                } else {
+                    Thread.sleep(period / 2000000);
+                }
+
+            } catch (Exception e) {
+            }
+
+            previousTime = System.nanoTime();
+        }
+
+    }
+
+    public void paint(Graphics g) {
+
+        g.drawImage(gameState.getBufferedImage(), 0, 0, this);
+
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // nhấn
-        inputManager.processKeyPressed(e.getKeyCode());
+        inputManager.setPressedButton(e.getKeyCode());
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // thả
-        inputManager.processKeyRelease(e.getKeyCode());
+        inputManager.setReleasedButton(e.getKeyCode());
     }
 
-} // class
+    public void setState(State state) {
+        gameState = state;
+        inputManager.setState(state);
+    }
+
+}

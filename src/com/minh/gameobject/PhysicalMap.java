@@ -1,25 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.minh.gameobjects;
+package com.minh.gameobject;
 
+import com.minh.state.GameWorldState;
 import com.minh.effect.CacheDataLoader;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-/**
- *
- * @author DELL
- */
 public class PhysicalMap extends GameObject {
 
     public int[][] phys_map;
     private int tileSize;
 
-    public PhysicalMap(float x, float y, GameWorld gameWorld) {
-        super(x, y, gameWorld); // super dẫn xuất
+    public PhysicalMap(float x, float y, GameWorldState gameWorld) {
+        super(x, y, gameWorld);
         this.tileSize = 30;
         phys_map = CacheDataLoader.getInstance().getPhysicalMap();
     }
@@ -28,24 +21,48 @@ public class PhysicalMap extends GameObject {
         return tileSize;
     }
 
-    // ve map
-    public void draw(Graphics2D g2) {
-        Camera camera = getGameWorld().camera;
-        
-        g2.setColor(Color.GRAY);
-        for(int i = 0;i< phys_map.length;i++)
-            for(int j = 0;j<phys_map[0].length;j++)
-                if(phys_map[i][j]!=0) g2.fillRect((int) getPosX() + j*tileSize - (int) camera.getPosX(), 
-                        (int) getPosY() + i*tileSize - (int) camera.getPosY(), tileSize, tileSize);
+    @Override
+    public void Update() {
     }
 
-    // xử lý va chạm với mặt đất
+    public Rectangle haveCollisionWithTop(Rectangle rect) {
+
+        int posX1 = rect.x / tileSize;
+        posX1 -= 2;
+        int posX2 = (rect.x + rect.width) / tileSize;
+        posX2 += 2;
+
+        //int posY = (rect.y + rect.height)/tileSize;
+        int posY = rect.y / tileSize;
+
+        if (posX1 < 0) {
+            posX1 = 0;
+        }
+
+        if (posX2 >= phys_map[0].length) {
+            posX2 = phys_map[0].length - 1;
+        }
+
+        for (int y = posY; y >= 0; y--) {
+            for (int x = posX1; x <= posX2; x++) {
+
+                if (phys_map[y][x] == 1) {
+                    Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
+                    if (rect.intersects(r)) {
+                        return r;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public Rectangle haveCollisionWithLand(Rectangle rect) {
-        // thuật toán lặp từ cột x1 tới cột x2
-        int posX1 = rect.x / tileSize; // idx của cột đầu tiên
-        posX1 -= 2; // trừ sai số
-        int posX2 = (rect.x + rect.width) / tileSize; // cột đầu cộng width
-        posX2 += 2; // cộng sai số
+
+        int posX1 = rect.x / tileSize;
+        posX1 -= 2;
+        int posX2 = (rect.x + rect.width) / tileSize;
+        posX2 += 2;
 
         int posY = (rect.y + rect.height) / tileSize;
 
@@ -56,50 +73,20 @@ public class PhysicalMap extends GameObject {
         if (posX2 >= phys_map[0].length) {
             posX2 = phys_map[0].length - 1;
         }
-
         for (int y = posY; y < phys_map.length; y++) {
             for (int x = posX1; x <= posX2; x++) {
+
                 if (phys_map[y][x] == 1) {
                     Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
-                    // intersects nhận một rectangle khác trả về true nếu rect khác khác có va chạm
                     if (rect.intersects(r)) {
                         return r;
                     }
                 }
             }
         }
-        return null; // không có phần tử nào va chạm
-    }
-
-    // xử lý va chạm với trần
-    public Rectangle haveCollisionWithTop(Rectangle rect){
-
-        int posX1 = rect.x/tileSize;
-        posX1 -= 2;
-        int posX2 = (rect.x + rect.width)/tileSize;
-        posX2 += 2;
-
-        //int posY = (rect.y + rect.height)/tileSize;
-        int posY = rect.y/tileSize;
-
-        if(posX1 < 0) posX1 = 0;
-        
-        if(posX2 >= phys_map[0].length) posX2 = phys_map[0].length - 1;
-        
-        for(int y = posY; y >= 0; y--){
-            for(int x = posX1; x <= posX2; x++){
-                
-                if(phys_map[y][x] == 1){
-                    Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
-                    if(rect.intersects(r))
-                        return r;
-                }
-            }
-        }
         return null;
     }
 
-    // xử lý va chạm với tường phải
     public Rectangle haveCollisionWithRightWall(Rectangle rect) {
 
         int posY1 = rect.y / tileSize;
@@ -134,7 +121,6 @@ public class PhysicalMap extends GameObject {
 
     }
 
-    // xử lý va chạm với tường trái
     public Rectangle haveCollisionWithLeftWall(Rectangle rect) {
 
         int posY1 = rect.y / tileSize;
@@ -169,8 +155,20 @@ public class PhysicalMap extends GameObject {
 
     }
 
-    @Override
-    public void Update() {
+    public void draw(Graphics2D g2) {
+
+        Camera camera = getGameWorld().camera;
+
+        g2.setColor(Color.GRAY);
+        for (int i = 0; i < phys_map.length; i++) {
+            for (int j = 0; j < phys_map[0].length; j++) {
+                if (phys_map[i][j] != 0) {
+                    g2.fillRect((int) getPosX() + j * tileSize - (int) camera.getPosX(),
+                            (int) getPosY() + i * tileSize - (int) camera.getPosY(), tileSize, tileSize);
+                }
+            }
+        }
+
     }
 
 }

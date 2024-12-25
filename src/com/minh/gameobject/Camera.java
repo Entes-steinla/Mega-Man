@@ -1,21 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.minh.gameobjects;
+package com.minh.gameobject;
 
-/**
- *
- * @author DELL
- */
+import com.minh.state.GameWorldState;
+
 public class Camera extends GameObject {
 
     private float widthView;
     private float heightView;
 
-    private boolean isLocked = false; // camera khong di theo nhan vat nua
+    private boolean isLocked = false;
 
-    public Camera(float x, float y, float widthView, float heightView, GameWorld gameWorld) {
+    public Camera(float x, float y, float widthView, float heightView, GameWorldState gameWorld) {
         super(x, y, gameWorld);
         this.widthView = widthView;
         this.heightView = heightView;
@@ -36,7 +30,7 @@ public class Camera extends GameObject {
         // AFTER THE TUTORIAL, CAMERA WILL SET THE NEW POS
         if (!isLocked) {
 
-            Megaman mainCharacter = getGameWorld().megaman;
+            MegaMan mainCharacter = getGameWorld().megaMan;
 
             if (mainCharacter.getPosX() - getPosX() > 400) {
                 setPosX(mainCharacter.getPosX() - 400);
