@@ -54,12 +54,20 @@ public class Megaman {
         Rectangle futureRect = getBoundForCollisionWithMap();
         futureRect.y += getSpeedY(); // doan truoc tuong lai xem co cham chuong ngai vat khong
         Rectangle rectLand = gameWorld.physicalMap.haveCollisionWithLand(futureRect); // mat dat
+        Rectangle rectTop = gameWorld.physicalMap.haveCollisionWithTop(futureRect); // tran
 
         if (rectLand != null) {
             setPosY(rectLand.y - getHeight() / 2);
         } else {
             setPosY(getPosY() + speedY);
             setSpeedY(getSpeedY() + mass);
+        }
+
+        if (rectTop != null) {
+            setSpeedY(0);
+            setPosY(getPosY());
+            setSpeedY(getSpeedY() + 100);
+
         }
     }
 
