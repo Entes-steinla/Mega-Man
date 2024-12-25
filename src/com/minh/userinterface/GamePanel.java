@@ -69,12 +69,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         if (buffG2D != null) {
             buffG2D.setColor(Color.WHITE); // xoa nen
-            buffG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
+//            buffG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
 
             gameWorld.Render(buffG2D);
 
         }
-        buffG2D.dispose(); // giải phóng tài nguyên
+//        buffG2D.dispose(); // giải phóng tài nguyên
     }
 
     public void startGame() {
@@ -89,7 +89,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public void run() {
 
         // frames per second
-        long FPS = 100;
+        long FPS = 120;
         long period = 1000 * 1000000 / FPS; // chu kì
         long beginTime;
         long sleepTime;

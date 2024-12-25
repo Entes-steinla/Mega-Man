@@ -37,7 +37,7 @@ public abstract class ParticularObject extends GameObject { // doi tuong cu the
     private float speedY;
     private int blood;
 
-    private int damage; // sat thuong
+    int damage; // sat thuong
 
     private int direction;
 

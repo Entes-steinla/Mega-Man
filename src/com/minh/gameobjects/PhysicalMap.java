@@ -72,32 +72,27 @@ public class PhysicalMap extends GameObject {
     }
 
     // xử lý va chạm với trần
-    public Rectangle haveCollisionWithTop(Rectangle rect) {
+    public Rectangle haveCollisionWithTop(Rectangle rect){
 
-        int posX1 = rect.x / tileSize;
+        int posX1 = rect.x/tileSize;
         posX1 -= 2;
-        int posX2 = (rect.x + rect.width) / tileSize;
+        int posX2 = (rect.x + rect.width)/tileSize;
         posX2 += 2;
 
         //int posY = (rect.y + rect.height)/tileSize;
-        int posY = rect.y / tileSize;
+        int posY = rect.y/tileSize;
 
-        if (posX1 < 0) {
-            posX1 = 0;
-        }
-
-        if (posX2 >= phys_map[0].length) {
-            posX2 = phys_map[0].length - 1;
-        }
-
-        for (int y = posY; y >= 0; y--) {
-            for (int x = posX1; x <= posX2; x++) {
-
-                if (phys_map[y][x] == 1) {
+        if(posX1 < 0) posX1 = 0;
+        
+        if(posX2 >= phys_map[0].length) posX2 = phys_map[0].length - 1;
+        
+        for(int y = posY; y >= 0; y--){
+            for(int x = posX1; x <= posX2; x++){
+                
+                if(phys_map[y][x] == 1){
                     Rectangle r = new Rectangle((int) getPosX() + x * tileSize, (int) getPosY() + y * tileSize, tileSize, tileSize);
-                    if (rect.intersects(r)) {
+                    if(rect.intersects(r))
                         return r;
-                    }
                 }
             }
         }

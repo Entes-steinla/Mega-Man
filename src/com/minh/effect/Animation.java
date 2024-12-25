@@ -240,12 +240,12 @@ public class Animation {
     // vẽ animation
     public void draw(int x, int y, Graphics2D g2) {
 
-        // animation sẽ vẽ hình hiện tại
         BufferedImage image = getCurrentImage();
 
         g2.drawImage(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
         if (drawRectFrame) {
-            g2.drawRect(x - image.getWidth() / 2, y - image.getWidth() / 2, image.getWidth(), image.getHeight());
+            g2.drawRect(x - image.getWidth() / 2, x - image.getWidth() / 2, image.getWidth(), image.getHeight());
         }
+
     }
 } // class

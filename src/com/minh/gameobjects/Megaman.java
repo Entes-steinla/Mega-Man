@@ -7,6 +7,7 @@ package com.minh.gameobjects;
 import com.minh.effect.Animation;
 import com.minh.effect.CacheDataLoader;
 import java.applet.AudioClip;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
