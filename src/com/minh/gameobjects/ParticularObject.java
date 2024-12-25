@@ -181,9 +181,65 @@ public abstract class ParticularObject extends GameObject { // doi tuong cu the
         return bound;
     }
 
-    @Override
-    public void Update() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void beHurt(int damgeEat) {
+        setBlood(getBlood() - damgeEat);
+        state = BEHURT;
+        hurtingCallBack();
     }
 
+    @Override
+    public void Update() {
+        switch (state) {
+            case ALIVE -> {
+            }
+            case BEHURT -> {
+                if (behurtBackAnim == null) {
+                    state = NOBEHURT;
+                    startTimeNoBeHurt = System.nanoTime();
+                    if (getBlood() == 0) {
+                        state = FEY;
+                    }
+                } else {
+                    behurtForwardAnim.Update(System.nanoTime());
+                    if (behurtForwardAnim.isLastFrame()) {
+                        behurtForwardAnim.reset();
+                        state = NOBEHURT;
+                        if (getBlood() == 0) {
+                            state = FEY;
+                        }
+                        startTimeNoBeHurt = System.nanoTime();
+                    }
+                }
+            } // behurt
+            case FEY -> {
+                state = DEATH;
+            }
+            case DEATH -> {
+            }
+            case NOBEHURT -> {
+                System.out.println("state = nobehurt");
+                if (System.nanoTime() - startTimeNoBeHurt > timeForNoBeHurt) {
+                    state = ALIVE;
+                }
+            }
+        }
+    }
+
+    public void drawBoundForCollisionWithMap(Graphics2D g2) {
+        Rectangle rect = getBoundForCollisionWithMap();
+        g2.setColor(Color.BLUE);
+    }
+
+    public void drawBoundForCollisionWithEnemy(Graphics2D g2) {
+        Rectangle rect = getBoundForCollisionWithEnemy();
+        g2.setColor(Color.RED);
+    }
+
+    public abstract Rectangle getBoundForCollisionWithEnemy();
+
+    public abstract void draw(Graphics2D g2);
+
+    public void hurtingCallBack() {
+    }
+;
 }
